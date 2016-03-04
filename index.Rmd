@@ -33,24 +33,39 @@ GP.
 
 But also:
 
-* Turn predictions into trades.
-* Really, turn predictions into trades.
+* Turn the predictions into trades.
+* No, really, turn the predictions into trades.
 * Eliminate or reduce exposure to certain risks.
 * Control trade costs. (commissions, short financing, market impact.)
 
 Hard to estimate the effects of the different moving parts separately, so
-simulate your trading historically. A backtest.
+simulate your trading historically. 
 
-Backtesting goes hand in hand with quantitative strategies: you cannot backtest
+A _backtest._
+
+Backtesting basically implies quantitative strategies: you cannot backtest
 discretionary trading.
 
 --- .class #kindsof
 
 ## Different kinds of backtests
 
+![](./figure/backtests.png)
 
-![](./backtests.png)
+--- .class #whattodo
 
+## Designing a backtesting system
+
+--- .class #problems
+
+## Garbatrage
+
+
+--- .class #ohno
+
+## Again!?
+
+![](./figure/Curve_fitting.jpg)
 
 
 --- .class #fooz
