@@ -57,7 +57,7 @@ _etc_.).
 * translate in an obvious way to a real trading strategy.
 * provide an absolute guarantee of _time safety_.
 
-Creating a good backtest environment requires:
+Creating a good backtesting environment requires:
 
 * Software engineering: balance _time safety_, _computational efficiency_
 and _developer sanity_.
@@ -73,9 +73,51 @@ avoid overfitting?_
 
 ![](./figure/backtests.png)
 
---- .class #problems
+--- .class #garbatrage
 
 ## Garbatrage
+
+Use Bayes' Rule:
+
+* Devising a consistently profitable trading strategy is probably hard. 
+(The EMH posits that it is essentially _impossible_.)
+* Bugs are easy to make. A good programmer will make several a day.
+
+If your backtest looks profitable, what is the likelihood the
+strategy is really profitable?
+
+### An example
+
+do three day old tweets give you this?
+
+```{r bmzsim,echo=FALSE}
+rvs <- read.csv('data/YAHOO-INDEX_DJI.csv',stringsAsFactors=FALSE)
+# right, most recent at top. jackasses.
+rvs[,1] <- as.Date(rvs[,1])
+rvs <- rvs[seq(nrow(rvs),1,by=-1),]
+
+ac <- rvs[,ncol(rvs)]
+rrs <- diff(ac,1) / ac[1:(length(ac)-1)]
+pwin <- 13/15
+dat <- as.Date(rvs[,1])[-1]
+set.seed(12345)
+wins <- 2 * rbinom(length(rrs),1,prob=pwin) - 1
+rrwin <- abs(rrs) * wins
+llwin <- log(1 + rrwin)
+mtmwin <- exp(cumsum(llwin))
+mtm <- data.frame(date=dat,mtm=mtmwin)
+require(ggplot2)
+ph <- ggplot(mtm,aes(x=date,y=mtm)) + geom_line() + scale_y_log10() 
+print(ph)
+library(SharpeR)
+print(as.sr(llwin,ope=252))
+```
+
+--- .class #timetravel
+
+## Time Travel
+
+
 
 
 --- .class #ohno

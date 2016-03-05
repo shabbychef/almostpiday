@@ -109,7 +109,7 @@ discretionary trading.</p>
 <li>provide an absolute guarantee of <em>time safety</em>.</li>
 </ul>
 
-<p>Creating a good backtest environment requires:</p>
+<p>Creating a good backtesting environment requires:</p>
 
 <ul>
 <li>Software engineering: balance <em>time safety</em>, <em>computational efficiency</em>
@@ -136,9 +136,44 @@ avoid overfitting?</em></li>
   <!-- Presenter Notes -->
 </slide>
 
-<slide class="class" id="problems" style="background:;">
+<slide class="class" id="garbatrage" style="background:;">
   <hgroup>
     <h2>Garbatrage</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Use Bayes&#39; Rule:</p>
+
+<ul>
+<li>Devising a consistently profitable trading strategy is probably hard. 
+(The EMH posits that it is essentially <em>impossible</em>.)</li>
+<li>Bugs are easy to make. A good programmer will make several a day.</li>
+</ul>
+
+<p>If your backtest looks profitable, what is the likelihood the
+strategy is really profitable?</p>
+
+<h3>An example</h3>
+
+<p>do three day old tweets give you this?</p>
+
+<pre><code>## Loading required package: ggplot2
+</code></pre>
+
+<p><img src="assets/fig/bmzsim-1.png" alt="plot of chunk bmzsim"></p>
+
+<pre><code>##   SR/sqrt(yr) Std. Error t value Pr(&gt;t)    
+## x        9.15       0.22      45 &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="timetravel" style="background:;">
+  <hgroup>
+    <h2>Time Travel</h2>
   </hgroup>
   <article data-timings="">
     
@@ -211,14 +246,20 @@ x = \sum_{0 \le i \le 100} i^2
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Again!?'>
+        data-slide=6 title='Time Travel'>
          6
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='foo'>
+        data-slide=7 title='Again!?'>
          7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='foo'>
+         8
       </a>
     </li>
   </ul>

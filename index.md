@@ -57,7 +57,7 @@ _etc_.).
 * translate in an obvious way to a real trading strategy.
 * provide an absolute guarantee of _time safety_.
 
-Creating a good backtest environment requires:
+Creating a good backtesting environment requires:
 
 * Software engineering: balance _time safety_, _computational efficiency_
 and _developer sanity_.
@@ -73,9 +73,42 @@ avoid overfitting?_
 
 ![](./figure/backtests.png)
 
---- .class #problems
+--- .class #garbatrage
 
 ## Garbatrage
+
+Use Bayes' Rule:
+
+* Devising a consistently profitable trading strategy is probably hard. 
+(The EMH posits that it is essentially _impossible_.)
+* Bugs are easy to make. A good programmer will make several a day.
+
+If your backtest looks profitable, what is the likelihood the
+strategy is really profitable?
+
+### An example
+
+do three day old tweets give you this?
+
+
+```
+## Loading required package: ggplot2
+```
+
+![plot of chunk bmzsim](assets/fig/bmzsim-1.png)
+
+```
+##   SR/sqrt(yr) Std. Error t value Pr(>t)    
+## x        9.15       0.22      45 <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+--- .class #timetravel
+
+## Time Travel
+
+
 
 
 --- .class #ohno
