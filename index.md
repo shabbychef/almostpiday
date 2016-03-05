@@ -34,27 +34,44 @@ GP.
 But also:
 
 * Turn the predictions into trades.
-* No, really, turn the predictions into trades.
+* No, _really_, turn the predictions into trades.
 * Eliminate or reduce exposure to certain risks.
 * Control trade costs. (commissions, short financing, market impact.)
 
-Hard to estimate the effects of the different moving parts separately, so
-simulate your trading historically. 
+Hard to estimate the effects of the different moving parts separately.
 
-A _backtest._
+So simulate your trading historically: A _backtest._
 
 Backtesting basically implies quantitative strategies: you cannot backtest
 discretionary trading.
+
+--- .class #whatdo
+
+## Backtests
+
+A backtest probably should:
+
+* simulate the effects of your actions (orders submitted).
+* simulate the actions of the world (fills, commissions, corporate actions,
+_etc_.).
+* translate in an obvious way to a real trading strategy.
+* provide an absolute guarantee of _time safety_.
+
+Creating a good backtest environment requires:
+
+* Software engineering: balance _time safety_, _computational efficiency_
+and _developer sanity_.
+* Domain knowledge and data: _How should you simulate fill?_
+_How do corporate actions work?_
+* Great statistical powers: _How do you interpret the results?_ _How do you
+avoid overfitting?_
+* Good intuition and sleuthing abilities: _What new thing is broken?_
 
 --- .class #kindsof
 
 ## Different kinds of backtests
 
 ![](./figure/backtests.png)
-
---- .class #whattodo
-
-## Designing a backtesting system
 
 --- .class #problems
 

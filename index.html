@@ -78,18 +78,48 @@ GP.</li>
 
 <ul>
 <li>Turn the predictions into trades.</li>
-<li>No, really, turn the predictions into trades.</li>
+<li>No, <em>really</em>, turn the predictions into trades.</li>
 <li>Eliminate or reduce exposure to certain risks.</li>
 <li>Control trade costs. (commissions, short financing, market impact.)</li>
 </ul>
 
-<p>Hard to estimate the effects of the different moving parts separately, so
-simulate your trading historically. </p>
+<p>Hard to estimate the effects of the different moving parts separately.</p>
 
-<p>A <em>backtest.</em></p>
+<p>So simulate your trading historically: A <em>backtest.</em></p>
 
 <p>Backtesting basically implies quantitative strategies: you cannot backtest
 discretionary trading.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="whatdo" style="background:;">
+  <hgroup>
+    <h2>Backtests</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>A backtest probably should:</p>
+
+<ul>
+<li>simulate the effects of your actions (orders submitted).</li>
+<li>simulate the actions of the world (fills, commissions, corporate actions,
+<em>etc</em>.).</li>
+<li>translate in an obvious way to a real trading strategy.</li>
+<li>provide an absolute guarantee of <em>time safety</em>.</li>
+</ul>
+
+<p>Creating a good backtest environment requires:</p>
+
+<ul>
+<li>Software engineering: balance <em>time safety</em>, <em>computational efficiency</em>
+and <em>developer sanity</em>.</li>
+<li>Domain knowledge and data: <em>How should you simulate fill?</em>
+<em>How do corporate actions work?</em></li>
+<li>Great statistical powers: <em>How do you interpret the results?</em> <em>How do you
+avoid overfitting?</em></li>
+<li>Good intuition and sleuthing abilities: <em>What new thing is broken?</em></li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -102,16 +132,6 @@ discretionary trading.</p>
   <article data-timings="">
     <p><img src="./figure/backtests.png" alt=""></p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="whattodo" style="background:;">
-  <hgroup>
-    <h2>Designing a backtesting system</h2>
-  </hgroup>
-  <article data-timings="">
-    
   </article>
   <!-- Presenter Notes -->
 </slide>
@@ -173,13 +193,13 @@ x = \sum_{0 \le i \le 100} i^2
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='Different kinds of backtests'>
+        data-slide=3 title='Backtests'>
          3
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Designing a backtesting system'>
+        data-slide=4 title='Different kinds of backtests'>
          4
       </a>
     </li>
