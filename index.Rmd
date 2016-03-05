@@ -34,7 +34,7 @@ GP.
 But also:
 
 * Turn the predictions into trades.
-* No, really, turn the predictions into trades.
+* No, _really_, turn the predictions into trades.
 * Eliminate or reduce exposure to certain risks.
 * Control trade costs. (commissions, short financing, market impact.)
 
@@ -45,6 +45,19 @@ A _backtest._
 
 Backtesting basically implies quantitative strategies: you cannot backtest
 discretionary trading.
+
+--- .class #whatdo
+
+## What should a backtest do?
+
+A backtest should:
+
+* 
+
+
+We always had tension between *time safety*, *computational efficiency* and
+*developer sanity*.
+
 
 --- .class #kindsof
 
