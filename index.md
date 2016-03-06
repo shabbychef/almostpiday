@@ -136,8 +136,6 @@ The most common error in backtests is _time travel_.
 
 <img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" />
 
-
-
 --- .class #ohno
 
 ## Break!
@@ -147,20 +145,14 @@ Turn it over to Zak for the next part.
 
 --- .class #ohno
 
-## Again!?
+### Again!?
 
-![](./figure/Curve_fitting.jpg)
+<center>![](./figure/Curve_fitting.jpg)</center>
 
 
 --- .class #fooz
 
-## foo
-
-
-
-```r
-x <- runif(100)
-```
+### misc
 
 Equations:
 
