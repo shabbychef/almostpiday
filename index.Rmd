@@ -177,8 +177,6 @@ ph <- ggplot(allem %>% dplyr::filter(mark %in% c('Close','Adjusted.Close')),
 print(ph)
 ```
 
-
-
 --- .class #ohno
 
 ## Break!
@@ -188,19 +186,14 @@ Turn it over to Zak for the next part.
 
 --- .class #ohno
 
-## Again!?
+### Again!?
 
-![](./figure/Curve_fitting.jpg)
+<center>![](./figure/Curve_fitting.jpg)</center>
 
 
 --- .class #fooz
 
-## foo
-
-
-```{r}
-x <- runif(100)
-```
+### misc
 
 Equations:
 
