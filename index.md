@@ -43,7 +43,11 @@ GP.
 
 #### What makes a profitable strategy?
 
-  _Need prediction of future price movements._
+<div align=left>
+<ul>
+<li> Need prediction of future price movements.
+</ul>
+</div>
 
 But also:
 
@@ -132,11 +136,20 @@ p { text-align: left; }
 The most common error in backtests is _time travel_.
 
 * Data vendors often backfill data for companies or remove them.
-* Corporate actions often signal information from the future.
+* Corporate actions are often time-leaky.
 
 <img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" />
 
---- .class #ohno
+--- .class #timetraveltwo
+
+### Time Travel
+
+* Aligning returns to data for training ML models often
+leaks future returns.
+* A warning: _the more often I retrain, the better
+my model!_
+
+--- .class #break
 
 ## Break!
 

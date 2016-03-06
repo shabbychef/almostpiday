@@ -49,7 +49,11 @@ GP.</li>
 </section>
 <section class='class' data-state='' id='backtests'>
   <h4>What makes a profitable strategy?</h4>
-  <p><em>Need prediction of future price movements.</em></p>
+  <div align=left>
+<ul>
+<li> Need prediction of future price movements.
+</ul>
+</div>
 
 <p>But also:</p>
 
@@ -145,13 +149,23 @@ p { text-align: left; }
 
 <ul>
 <li>Data vendors often backfill data for companies or remove them.</li>
-<li>Corporate actions often signal information from the future.</li>
+<li>Corporate actions are often time-leaky.</li>
 </ul>
 
 <p><img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" /></p>
 
 </section>
-<section class='class' data-state='' id='ohno'>
+<section class='class' data-state='' id='timetraveltwo'>
+  <h3>Time Travel</h3>
+  <ul>
+<li>Aligning returns to data for training ML models often
+leaks future returns.</li>
+<li>A warning: <em>the more often I retrain, the better
+my model!</em></li>
+</ul>
+
+</section>
+<section class='class' data-state='' id='break'>
   <h2>Break!</h2>
   <p>Turn it over to Zak for the next part.</p>
 
