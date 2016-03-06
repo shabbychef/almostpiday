@@ -3,15 +3,31 @@ title       : Backtesting
 subtitle    : war stories and cautionary tales.
 author      : Steven E. Pav
 job         : (former quant)
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+framework   : revealjs      # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : [mathjax, bootstrap]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+revealjs    : 
+  transition  : "zoom"
+  center      : "false"
+  transitionSpeed : "fast"
+  theme : "sky"    
 ---
 
-## My background
+<!-- c.f.  
+http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
+http://stackoverflow.com/a/21468200/164611
+https://github.com/hakimel/reveal.js/
+https://j.eremy.net/align-lists-flush-left/
+-->
+ 
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+### My background
 
 * Former applied mathematician. (IUB graduate!)
 * Quant Programmer & Quant Strategist 2007-2015 at 
@@ -25,11 +41,9 @@ GP.
 
 --- .class #backtests
 
-## Backtests
+#### What makes a profitable strategy?
 
-### What makes a profitable strategy?
-
-* Need prediction of future price movements.
+  _Need prediction of future price movements._
 
 But also:
 
@@ -47,7 +61,7 @@ discretionary trading.
 
 --- .class #whatdo
 
-## Backtests
+### Backtests
 
 A backtest probably should:
 
@@ -69,47 +83,67 @@ avoid overfitting?_
 
 --- .class #kindsof
 
-## Different kinds of backtests
+### Different kinds of backtests
 
-![](./figure/backtests.png)
+<center>![](./figure/backtests.png)</center>
+
 
 --- .class #garbatrage
 
-## Garbatrage
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+### Garbatrage
 
 Use Bayes' Rule:
 
-* Devising a consistently profitable trading strategy is probably hard. 
+* Devising a consistently profitable trading strategy is known to be hard. <br>
 (The EMH posits that it is essentially _impossible_.)
 * Bugs are easy to make. A good programmer will make several a day.
 
 If your backtest looks profitable, what is the likelihood the
 strategy is really profitable?
 
+If you are exploring a new asset class, using a new fill simulator, 
+using new code, testing a new strategy, or reading a paper from a third party, 
+and the backtest looks great, _it's probably a bug_.
+
+--- .class #anexample
+
+<style type="text/css">
+p { text-align: center; } 
+</style>
+
 ### An example
 
-do three day old tweets give you this?
+Should three day old tweets give you this?
 
+<img src="assets/fig/bmzsim-1.png" title="plot of chunk bmzsim" alt="plot of chunk bmzsim" width="900px" height="500px" />
 
-```
-## Loading required package: ggplot2
-```
-
-![plot of chunk bmzsim](assets/fig/bmzsim-1.png)
-
-```
-##   SR/sqrt(yr) Std. Error t value Pr(>t)    
-## x        9.15       0.22      45 <2e-16 ***
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
+<style type="text/css">
+p { text-align: left; }
+</style>
 
 --- .class #timetravel
 
-## Time Travel
+### Time Travel
+
+The most common error in backtests is _time travel_.
+
+* Data vendors often backfill data for companies or remove them.
+* Corporate actions often signal information from the future.
+
+<img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" />
 
 
 
+--- .class #ohno
+
+## Break!
+
+
+Turn it over to Zak for the next part.
 
 --- .class #ohno
 

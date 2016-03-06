@@ -3,15 +3,31 @@ title       : Backtesting
 subtitle    : war stories and cautionary tales.
 author      : Steven E. Pav
 job         : (former quant)
-framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+framework   : revealjs      # {io2012, html5slides, shower, dzslides, ...}
 highlighter : highlight.js  # {highlight.js, prettify, highlight}
 hitheme     : tomorrow      # 
 widgets     : [mathjax, bootstrap]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
+revealjs    : 
+  transition  : "zoom"
+  center      : "false"
+  transitionSpeed : "fast"
+  theme : "sky"    
 ---
 
-## My background
+<!-- c.f.  
+http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
+http://stackoverflow.com/a/21468200/164611
+https://github.com/hakimel/reveal.js/
+https://j.eremy.net/align-lists-flush-left/
+-->
+ 
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+### My background
 
 * Former applied mathematician. (IUB graduate!)
 * Quant Programmer & Quant Strategist 2007-2015 at 
@@ -25,11 +41,9 @@ GP.
 
 --- .class #backtests
 
-## Backtests
+#### What makes a profitable strategy?
 
-### What makes a profitable strategy?
-
-* Need prediction of future price movements.
+  _Need prediction of future price movements._
 
 But also:
 
@@ -47,7 +61,7 @@ discretionary trading.
 
 --- .class #whatdo
 
-## Backtests
+### Backtests
 
 A backtest probably should:
 
@@ -69,30 +83,45 @@ avoid overfitting?_
 
 --- .class #kindsof
 
-## Different kinds of backtests
+### Different kinds of backtests
 
-![](./figure/backtests.png)
+<center>![](./figure/backtests.png)</center>
+
 
 --- .class #garbatrage
 
-## Garbatrage
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+### Garbatrage
 
 Use Bayes' Rule:
 
-* Devising a consistently profitable trading strategy is probably hard. 
+* Devising a consistently profitable trading strategy is known to be hard. <br>
 (The EMH posits that it is essentially _impossible_.)
 * Bugs are easy to make. A good programmer will make several a day.
 
 If your backtest looks profitable, what is the likelihood the
 strategy is really profitable?
 
+If you are exploring a new asset class, using a new fill simulator, 
+using new code, testing a new strategy, or reading a paper from a third party, 
+and the backtest looks great, _it's probably a bug_.
+
+--- .class #anexample
+
+<style type="text/css">
+p { text-align: center; } 
+</style>
+
 ### An example
 
-do three day old tweets give you this?
+Should three day old tweets give you this?
 
-```{r bmzsim,echo=FALSE}
+```{r bmzsim,echo=FALSE,warning=FALSE,fig.width=14.0,fig.height=7,out.width="900px",out.height="500px"}
 rvs <- read.csv('data/YAHOO-INDEX_DJI.csv',stringsAsFactors=FALSE)
-# right, most recent at top. jackasses.
+# flip up down
 rvs[,1] <- as.Date(rvs[,1])
 rvs <- rvs[seq(nrow(rvs),1,by=-1),]
 
@@ -107,18 +136,55 @@ llwin <- log(1 + rrwin)
 mtmwin <- exp(cumsum(llwin))
 mtm <- data.frame(date=dat,mtm=mtmwin)
 require(ggplot2)
-ph <- ggplot(mtm,aes(x=date,y=mtm)) + geom_line() + scale_y_log10() 
+ph <- ggplot(mtm,aes(x=date,y=mtm)) + 
+	geom_line(size=1) + 
+	scale_y_log10() 
 print(ph)
-library(SharpeR)
-print(as.sr(llwin,ope=252))
+#library(SharpeR)
+#print(as.sr(llwin,ope=252))
 ```
+
+<style type="text/css">
+p { text-align: left; }
+</style>
 
 --- .class #timetravel
 
-## Time Travel
+### Time Travel
+
+The most common error in backtests is _time travel_.
+
+* Data vendors often backfill data for companies or remove them.
+* Corporate actions often signal information from the future.
+
+```{r aapl,echo=FALSE,warning=FALSE,fig.width=14.0,fig.height=7,out.width="900px",out.height="500px"}
+library(tidyr)
+library(plyr)
+msft <- read.csv('data/YAHOO-MSFT.csv',stringsAsFactors=FALSE)
+# flip up down
+msft[,1] <- as.Date(msft[,1])
+msft <- msft[seq(nrow(msft),1,by=-1),]
+
+allem <- msft %>%
+	tidyr::gather(key=mark,value=price,-Date)
+
+library(ggplot2)
+ph <- ggplot(allem %>% dplyr::filter(mark %in% c('Close','Adjusted.Close')),
+	aes(x=Date,y=price,group=mark,colour=mark)) + 
+	geom_line(size=1) + 
+	scale_y_log10() +
+  labs(title='MSFT')
+print(ph)
+```
 
 
 
+--- .class #ohno
+
+## Break!
+
+
+Turn it over to Zak for the next part.
 
 --- .class #ohno
 

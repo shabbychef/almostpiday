@@ -1,53 +1,40 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <title>Backtesting</title>
   <meta charset="utf-8">
-  <meta name="description" content="Backtesting">
+  <title>Backtesting</title>
+  <meta name="description" content="">
   <meta name="author" content="Steven E. Pav">
-  <meta name="generator" content="slidify" />
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta http-equiv="X-UA-Compatible" content="chrome=1">
-  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
-  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
-    media="only screen and (max-device-width: 480px)" >
-  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
-  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
-  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
-<link rel=stylesheet href="./assets/css/ribbons.css"></link>
-
-  
-  <!-- Grab CDN jQuery, fall back to local if offline -->
-  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
-  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
-  <script data-main="libraries/frameworks/io2012/js/slides" 
-    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
-  </script>
-  
-  
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/sky.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "libraries/widgets/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href = "assets/css/ribbons.css">
 
 </head>
-<body style="opacity: 0">
-  <slides class="layout-widescreen">
-    
-    <!-- LOGO SLIDE -->
-        <slide class="title-slide segue nobackground">
-  <hgroup class="auto-fadein">
-    <h1>Backtesting</h1>
-    <h2>war stories and cautionary tales.</h2>
-    <p>Steven E. Pav<br/>(former quant)</p>
-  </hgroup>
-  <article></article>  
-</slide>
-    
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  
+  <!-- c.f.  
+http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
+http://stackoverflow.com/a/21468200/164611
+https://github.com/hakimel/reveal.js/
+https://j.eremy.net/align-lists-flush-left/
+-->
 
-    <!-- SLIDES -->
-    <slide class="" id="slide-1" style="background:;">
-  <hgroup>
-    <h2>My background</h2>
-  </hgroup>
-  <article data-timings="">
-    <ul>
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+<h3>My background</h3>
+
+<ul>
 <li>Former applied mathematician. (IUB graduate!)</li>
 <li>Quant Programmer &amp; Quant Strategist 2007-2015 at 
 two small hedge funds.</li>
@@ -59,20 +46,10 @@ GP.</li>
 <li>Whatever the approach, we used <em>backtests</em>. (GP used them heavily.)</li>
 </ul>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="backtests" style="background:;">
-  <hgroup>
-    <h2>Backtests</h2>
-  </hgroup>
-  <article data-timings="">
-    <h3>What makes a profitable strategy?</h3>
-
-<ul>
-<li>Need prediction of future price movements.</li>
-</ul>
+</section>
+<section class='class' data-state='' id='backtests'>
+  <h4>What makes a profitable strategy?</h4>
+  <p><em>Need prediction of future price movements.</em></p>
 
 <p>But also:</p>
 
@@ -90,16 +67,10 @@ GP.</li>
 <p>Backtesting basically implies quantitative strategies: you cannot backtest
 discretionary trading.</p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="whatdo" style="background:;">
-  <hgroup>
-    <h2>Backtests</h2>
-  </hgroup>
-  <article data-timings="">
-    <p>A backtest probably should:</p>
+</section>
+<section class='class' data-state='' id='whatdo'>
+  <h3>Backtests</h3>
+  <p>A backtest probably should:</p>
 
 <ul>
 <li>simulate the effects of your actions (orders submitted).</li>
@@ -121,30 +92,24 @@ avoid overfitting?</em></li>
 <li>Good intuition and sleuthing abilities: <em>What new thing is broken?</em></li>
 </ul>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+</section>
+<section class='class' data-state='' id='kindsof'>
+  <h3>Different kinds of backtests</h3>
+  <p><center><img src="./figure/backtests.png" alt=""></center></p>
 
-<slide class="class" id="kindsof" style="background:;">
-  <hgroup>
-    <h2>Different kinds of backtests</h2>
-  </hgroup>
-  <article data-timings="">
-    <p><img src="./figure/backtests.png" alt=""></p>
+</section>
+<section class='class' data-state='' id='garbatrage'>
+  
+  <style type="text/css">
+p { text-align: left; }
+</style>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+<h3>Garbatrage</h3>
 
-<slide class="class" id="garbatrage" style="background:;">
-  <hgroup>
-    <h2>Garbatrage</h2>
-  </hgroup>
-  <article data-timings="">
-    <p>Use Bayes&#39; Rule:</p>
+<p>Use Bayes&#39; Rule:</p>
 
 <ul>
-<li>Devising a consistently profitable trading strategy is probably hard. 
+<li>Devising a consistently profitable trading strategy is known to be hard. <br>
 (The EMH posits that it is essentially <em>impossible</em>.)</li>
 <li>Bugs are easy to make. A good programmer will make several a day.</li>
 </ul>
@@ -152,52 +117,53 @@ avoid overfitting?</em></li>
 <p>If your backtest looks profitable, what is the likelihood the
 strategy is really profitable?</p>
 
+<p>If you are exploring a new asset class, using a new fill simulator, 
+using new code, testing a new strategy, or reading a paper from a third party, 
+and the backtest looks great, <em>it&#39;s probably a bug</em>.</p>
+
+</section>
+<section class='class' data-state='' id='anexample'>
+  
+  <style type="text/css">
+p { text-align: center; } 
+</style>
+
 <h3>An example</h3>
 
-<p>do three day old tweets give you this?</p>
+<p>Should three day old tweets give you this?</p>
 
-<pre><code>## Loading required package: ggplot2
-</code></pre>
+<p><img src="assets/fig/bmzsim-1.png" title="plot of chunk bmzsim" alt="plot of chunk bmzsim" width="900px" height="500px" /></p>
 
-<p><img src="assets/fig/bmzsim-1.png" alt="plot of chunk bmzsim"></p>
+<style type="text/css">
+p { text-align: left; }
+</style>
 
-<pre><code>##   SR/sqrt(yr) Std. Error t value Pr(&gt;t)    
-## x        9.15       0.22      45 &lt;2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-</code></pre>
+</section>
+<section class='class' data-state='' id='timetravel'>
+  <h3>Time Travel</h3>
+  <p>The most common error in backtests is <em>time travel</em>.</p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+<ul>
+<li>Data vendors often backfill data for companies or remove them.</li>
+<li>Corporate actions often signal information from the future.</li>
+</ul>
 
-<slide class="class" id="timetravel" style="background:;">
-  <hgroup>
-    <h2>Time Travel</h2>
-  </hgroup>
-  <article data-timings="">
-    
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+<p><img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" /></p>
 
-<slide class="class" id="ohno" style="background:;">
-  <hgroup>
-    <h2>Again!?</h2>
-  </hgroup>
-  <article data-timings="">
-    <p><img src="./figure/Curve_fitting.jpg" alt=""></p>
+</section>
+<section class='class' data-state='' id='ohno'>
+  <h2>Break!</h2>
+  <p>Turn it over to Zak for the next part.</p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
+</section>
+<section class='class' data-state='' id='ohno'>
+  <h2>Again!?</h2>
+  <p><img src="./figure/Curve_fitting.jpg" alt=""></p>
 
-<slide class="class" id="fooz" style="background:;">
-  <hgroup>
-    <h2>foo</h2>
-  </hgroup>
-  <article data-timings="">
-    <pre><code class="r">x &lt;- runif(100)
+</section>
+<section class='class' data-state='' id='fooz'>
+  <h2>foo</h2>
+  <pre><code class="r">x &lt;- runif(100)
 </code></pre>
 
 <p>Equations:</p>
@@ -206,97 +172,58 @@ strategy is really profitable?</p>
 x = \sum_{0 \le i \le 100} i^2
 \]</p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-    <slide class="backdrop"></slide>
-  </slides>
-  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
-    <ul>
-      <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=1 title='My background'>
-         1
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Backtests'>
-         2
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=3 title='Backtests'>
-         3
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Different kinds of backtests'>
-         4
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Garbatrage'>
-         5
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Time Travel'>
-         6
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=7 title='Again!?'>
-         7
-      </a>
-    </li>
-    <li>
-      <a href="#" target="_self" rel='tooltip' 
-        data-slide=8 title='foo'>
-         8
-      </a>
-    </li>
-  </ul>
-  </div>  <!--[if IE]>
-    <script 
-      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
-    </script>
-    <script>CFInstall.check({mode: 'overlay'});</script>
-  <![endif]-->
+</section>
+    </div>
+  </div>
 </body>
-  <!-- Load Javascripts for Widgets -->
-  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
-<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
-
-  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
-  <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        inlineMath: [['$','$'], ['\\(','\\)']],
-        processEscapes: true
-      }
-    });
-  </script>
-  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-  </script> -->
-  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: false,
+    theme: Reveal.getQueryHash().theme || 'sky', 
+    transition: Reveal.getQueryHash().transition || 'zoom', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script> -->
+<script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
 </script>
 <script>  
-  $(function (){ 
-    $("#example").popover(); 
-    $("[rel='tooltip']").tooltip(); 
-  });  
-  </script>  
-  <!-- LOAD HIGHLIGHTER JS FILES -->
-  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
-  <script>hljs.initHighlightingOnLoad();</script>
-  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
-   
-  </html>
+$(function (){ 
+  $("#example").popover(); 
+  $("[rel='tooltip']").tooltip(); 
+});  
+</script>  
+<!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
