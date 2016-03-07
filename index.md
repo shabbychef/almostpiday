@@ -140,7 +140,7 @@ The most common error in backtests is _time travel_.
 
 <img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" />
 
---- .class #timetraveltwo
+--- .class #timetravelalignone
 
 ### Time Travel
 
@@ -148,6 +148,19 @@ The most common error in backtests is _time travel_.
 leaks future returns.
 * A warning: _the more often I retrain, the better
 my model!_
+
+<center>![](./figure/align1.png)</center>
+
+--- .class #timetravelaligntwo
+
+### Time Travel
+
+* Aligning returns to data for training ML models often
+leaks future returns.
+* A warning: _the more often I retrain, the better
+my model!_
+
+<center>![](./figure/align2.png)</center>
 
 --- .class #break
 

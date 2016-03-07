@@ -9,26 +9,27 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="744.09448819"
-   height="1052.3622047"
+   width="753.5"
+   height="360"
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="align.svg">
+   sodipodi:docname="align1.png">
   <defs
      id="defs4">
     <marker
        inkscape:stockid="Arrow2Mend"
        orient="auto"
-       refY="0.0"
-       refX="0.0"
+       refY="0"
+       refX="0"
        id="Arrow2Mend"
-       style="overflow:visible;">
+       style="overflow:visible">
       <path
          id="path3990"
-         style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
-         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
-         transform="scale(0.6) rotate(180) translate(0,0)" />
+         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         transform="scale(-0.6,-0.6)"
+         inkscape:connector-curvature="0" />
     </marker>
   </defs>
   <sodipodi:namedview
@@ -38,20 +39,31 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="375"
-     inkscape:cy="520"
+     inkscape:zoom="0.5"
+     inkscape:cx="340.66357"
+     inkscape:cy="359.7908"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
-     showgrid="true"
+     showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1060"
      inkscape:window-x="-3"
      inkscape:window-y="-3"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="1"
+     fit-margin-top="40"
+     fit-margin-left="10"
+     fit-margin-right="10"
+     fit-margin-bottom="20"
+     inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
-       id="grid2985" />
+       id="grid2985"
+       empspacing="5"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       originx="-1.5px"
+       originy="-350px" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -68,11 +80,12 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-1.5,-342.36218)">
     <g
        id="g3054">
       <flowRoot
-         style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Sans;font-style:normal;font-weight:normal;font-size:40px;line-height:125%;letter-spacing:0px;word-spacing:0px"
+         style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
          id="flowRoot3046"
          xml:space="preserve"><flowRegion
            id="flowRegion3048"><rect
@@ -81,7 +94,7 @@
              height="190.41376"
              width="443.45697"
              id="rect3050" /></flowRegion><flowPara
-           id="flowPara3052"></flowPara></flowRoot>    </g>
+           id="flowPara3052" /></flowRoot>    </g>
     <rect
        y="442.36218"
        x="211"
@@ -270,7 +283,7 @@
          sodipodi:role="line"
          id="tspan4466"
          x="155.86298"
-         y="473.54477">  </tspan></text>
+         y="473.54477" /></text>
     <path
        sodipodi:nodetypes="cc"
        inkscape:connector-curvature="0"
@@ -282,23 +295,24 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="training"
-     style="display:inline">
+     style="display:none"
+     transform="translate(-1.5,-342.36218)">
     <path
        style="fill:#bfbfbf;fill-opacity:0.85024157;stroke:none"
-       d="m 345,382.36218 0,130 65,35 0,135 335,0 0,-300 z"
+       d="m 341.98985,342.36349 0,169.99869 65,35 0,155.09709 348.15229,0.10596 -0.14023,-360.19337 z"
        id="path4606"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc" />
     <text
        xml:space="preserve"
        style="font-size:28px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       x="383.59399"
+       x="380.58383"
        y="425.11838"
        id="text4626"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan4628"
-         x="383.59399"
+         x="380.58383"
          y="425.11838">train model on Tuesday</tspan></text>
   </g>
 </svg>
