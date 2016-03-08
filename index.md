@@ -10,12 +10,13 @@ widgets     : [mathjax, bootstrap]            # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
 revealjs    : 
-  transition  : "zoom"
+  transition  : "none"
   center      : "false"
   transitionSpeed : "fast"
   theme : "sky"    
 ---
 
+<!-- zoom transition also good, but a little distracting -->
 <!-- c.f.  
 http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
 http://stackoverflow.com/a/21468200/164611
@@ -129,36 +130,68 @@ Should three day old tweets give you this?
 p { text-align: left; }
 </style>
 
---- .class #timetravel
+--- .class #timetravelzero
 
 ### Time Travel
 
-The most common error in backtests is _time travel_.
+The most common error in backtests is _time travel_: use of future information 
+in simulations.
 
+Time travel occurs for many reasons:
+
+* Backfill and survivorship bias.
+* Representation of corporate actions: dividends, splits, spinoffs, mergers,
+warrants.
+* Think-os and code boo boos.
+
+Time travel is easy to simulate, but hard to implement!
+
+--- .class #survivorship
+
+### Survivorship and Backfill
+
+* Classic survivorship bias: trading on a universe of stocks
+defined by _present_ membership in some index, say.
 * Data vendors often backfill data for companies or remove them.
-* Corporate actions are often time-leaky.
+(You can test for this, or just ask them!)
+* Vendors may do weird things to deal with mergers (or you may!)
 
-<img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" />
+--- .class #corporate
 
---- .class #timetravelalignone
+### Corporate Actions 
 
-### Time Travel
+* Corporate actions are notoriously time-leaky.
+* Problems stem from representing asset returns as a single time series: in reality, they
+_branch_ across time.
+* Corporate actions are just 
+[hard to model](http://www.denisonmines.com/s/Corporate_History.asp).
 
-* Aligning returns to data for training ML models often
-leaks future returns.
+For example, (back) adjusted closes. Investing inversely proportional to
+adjusted close gives a time-travel 'arb'.
+
+<img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="400px" />
+
+--- .class #mlhackerone
+
+### The ML Hacker Trap
+
+* Align returns to features for training ML models.
+* Forget that the model is timestamped to the _returns_.
 * A warning: _the more often I retrain, the better
 my model!_
+(Often with an excuse for 'time freshness'.)
 
 <center>![](./figure/align1.png)</center>
 
---- .class #timetravelaligntwo
+--- .class #mlhackertwo
 
-### Time Travel
+### The ML Hacker Trap
 
-* Aligning returns to data for training ML models often
-leaks future returns.
+* Align returns to features for training ML models.
+* Forget that the model is timestamped to the _returns_.
 * A warning: _the more often I retrain, the better
 my model!_
+(Often with an excuse for 'time freshness'.)
 
 <center>![](./figure/align2.png)</center>
 
@@ -166,6 +199,7 @@ my model!_
 
 ## Break!
 
+Time permitting, talk about overfitting later.
 
 Turn it over to Zak for the next part.
 
@@ -175,10 +209,17 @@ Turn it over to Zak for the next part.
 
 <center>![](./figure/Curve_fitting.jpg)</center>
 
-
 --- .class #fooz
 
-### misc
+## Plain Old Overfitting
+
+When backtests are fixed, you can move on to overfitting.
+
+Overfitting has two flavors here:
+
+1. a.
+2. b.
+
 
 Equations:
 

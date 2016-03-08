@@ -21,7 +21,9 @@
     <div class="slides">
       <section class='' data-state='' id='slide-1'>
   
-  <!-- c.f.  
+  <!-- zoom transition also good, but a little distracting -->
+
+<!-- c.f.  
 http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
 http://stackoverflow.com/a/21468200/164611
 https://github.com/hakimel/reveal.js/
@@ -143,37 +145,71 @@ p { text-align: left; }
 </style>
 
 </section>
-<section class='class' data-state='' id='timetravel'>
+<section class='class' data-state='' id='timetravelzero'>
   <h3>Time Travel</h3>
-  <p>The most common error in backtests is <em>time travel</em>.</p>
+  <p>The most common error in backtests is <em>time travel</em>: use of future information 
+in simulations.</p>
+
+<p>Time travel occurs for many reasons:</p>
 
 <ul>
-<li>Data vendors often backfill data for companies or remove them.</li>
-<li>Corporate actions are often time-leaky.</li>
+<li>Backfill and survivorship bias.</li>
+<li>Representation of corporate actions: dividends, splits, spinoffs, mergers,
+warrants.</li>
+<li>Think-os and code boo boos.</li>
 </ul>
 
-<p><img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="500px" /></p>
+<p>Time travel is easy to simulate, but hard to implement!</p>
 
 </section>
-<section class='class' data-state='' id='timetravelalignone'>
-  <h3>Time Travel</h3>
+<section class='class' data-state='' id='survivorship'>
+  <h3>Survivorship and Backfill</h3>
   <ul>
-<li>Aligning returns to data for training ML models often
-leaks future returns.</li>
+<li>Classic survivorship bias: trading on a universe of stocks
+defined by <em>present</em> membership in some index, say.</li>
+<li>Data vendors often backfill data for companies or remove them.
+(You can test for this, or just ask them!)</li>
+<li>Vendors may do weird things to deal with mergers (or you may!)</li>
+</ul>
+
+</section>
+<section class='class' data-state='' id='corporate'>
+  <h3>Corporate Actions</h3>
+  <ul>
+<li>Corporate actions are notoriously time-leaky.</li>
+<li>Problems stem from representing asset returns as a single time series: in reality, they
+<em>branch</em> across time.</li>
+<li>Corporate actions are just 
+<a href="http://www.denisonmines.com/s/Corporate_History.asp">hard to model</a>.</li>
+</ul>
+
+<p>For example, (back) adjusted closes. Investing inversely proportional to
+adjusted close gives a time-travel &#39;arb&#39;.</p>
+
+<p><img src="assets/fig/aapl-1.png" title="plot of chunk aapl" alt="plot of chunk aapl" width="900px" height="400px" /></p>
+
+</section>
+<section class='class' data-state='' id='mlhackerone'>
+  <h3>The ML Hacker Trap</h3>
+  <ul>
+<li>Align returns to features for training ML models.</li>
+<li>Forget that the model is timestamped to the <em>returns</em>.</li>
 <li>A warning: <em>the more often I retrain, the better
-my model!</em></li>
+my model!</em>
+(Often with an excuse for &#39;time freshness&#39;.)</li>
 </ul>
 
 <p><center><img src="./figure/align1.png" alt=""></center></p>
 
 </section>
-<section class='class' data-state='' id='timetravelaligntwo'>
-  <h3>Time Travel</h3>
+<section class='class' data-state='' id='mlhackertwo'>
+  <h3>The ML Hacker Trap</h3>
   <ul>
-<li>Aligning returns to data for training ML models often
-leaks future returns.</li>
+<li>Align returns to features for training ML models.</li>
+<li>Forget that the model is timestamped to the <em>returns</em>.</li>
 <li>A warning: <em>the more often I retrain, the better
-my model!</em></li>
+my model!</em>
+(Often with an excuse for &#39;time freshness&#39;.)</li>
 </ul>
 
 <p><center><img src="./figure/align2.png" alt=""></center></p>
@@ -181,7 +217,9 @@ my model!</em></li>
 </section>
 <section class='class' data-state='' id='break'>
   <h2>Break!</h2>
-  <p>Turn it over to Zak for the next part.</p>
+  <p>Time permitting, talk about overfitting later.</p>
+
+<p>Turn it over to Zak for the next part.</p>
 
 </section>
 <section class='class' data-state='' id='ohno'>
@@ -190,8 +228,17 @@ my model!</em></li>
 
 </section>
 <section class='class' data-state='' id='fooz'>
-  <h3>misc</h3>
-  <p>Equations:</p>
+  <h2>Plain Old Overfitting</h2>
+  <p>When backtests are fixed, you can move on to overfitting.</p>
+
+<p>Overfitting has two flavors here:</p>
+
+<ol>
+<li>a.</li>
+<li>b.</li>
+</ol>
+
+<p>Equations:</p>
 
 <p>\[
 x = \sum_{0 \le i \le 100} i^2
@@ -212,7 +259,7 @@ x = \sum_{0 \le i \le 100} i^2
     history: true,
     center: false,
     theme: Reveal.getQueryHash().theme || 'sky', 
-    transition: Reveal.getQueryHash().transition || 'zoom', 
+    transition: Reveal.getQueryHash().transition || 'none', 
     dependencies: [
     // Cross-browser shim that fully implements classList -
     // https://github.com/eligrey/classList.js/
