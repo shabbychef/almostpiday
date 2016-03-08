@@ -227,22 +227,59 @@ my model!</em>
   <p><center><img src="./figure/Curve_fitting.jpg" alt=""></center></p>
 
 </section>
-<section class='class' data-state='' id='fooz'>
+<section class='class' data-state='' id='poo_one'>
   <h2>Plain Old Overfitting</h2>
   <p>When backtests are fixed, you can move on to overfitting.</p>
 
-<p>Overfitting has two flavors here:</p>
+<p>Overfitting has two flavors (to me):</p>
 
 <ol>
-<li>a.</li>
-<li>b.</li>
+<li>Building a decent model for the assets and features used, but
+overestimating future performance based on in-sample data.
+(Using same data to build model and estimate it&#39;s Sharpe.)</li>
+<li>Adding opportunities <a href="http://arxiv.org/abs/1409.5936">decreases the expected Sharpe</a>
+due to the added degrees of freedom.</li>
 </ol>
 
-<p>Equations:</p>
+<p>A Quant&#39;s Kōan:</p>
 
-<p>\[
-x = \sum_{0 \le i \le 100} i^2
-\]</p>
+<blockquote>
+<p>Ignore data and your model is suboptimal.
+Use all the data: your model is
+suboptimal.</p>
+</blockquote>
+
+</section>
+<section class='class' data-state='' id='poo_two'>
+  <h2>Plain Old Overfitting</h2>
+  <p>Overfit is <em>not</em> cured by silly ML tricks:</p>
+
+<p>You can talk about hold-out sets and in-sample all you want. 
+<em>There is no out-of-sample.</em> There is <em>in-sample</em> and 
+<em>trading-real-money-on-the-strategy</em>.</p>
+
+<p>Overfit is approached as a technical problem, but fighting
+it requires discipline and soft engineering skills:
+If you don&#39;t keep track of everything you have tried, you can&#39;t 
+apply most techniques.</p>
+
+</section>
+<section class='class' data-state='' id='twoproblems'>
+  <h2>Technical Approaches</h2>
+  <p>Two forms of the problem I was interested in:</p>
+
+<ol>
+<li>For automated strategy search: having observed the in-sample Sharpe of \(n \gg 10^4\) strategies,
+possibly selected by hill-climbing in-sample Sharpe, could we de-bias the Sharpe of the optimal one? 
+Or could we select some top \(k\) of them and &#39;average&#39; the strategies?</li>
+<li>For human strategy search: having observed the <em>returns</em> of \(n \ge 10^3\) strategies, along with
+the settings of some &#39;knobs&#39; for each of them, could we estimate the effects of
+each knob? Could we pick the best knob setting and de-bias the estimated future
+Sharpe?</li>
+</ol>
+
+<p>I suspected classical approaches (WRC and extensions, Hansen&#39;s SPA, <em>etc.</em>)
+would not work: different input, wrong assumptions, wouldn&#39;t scale.</p>
 
 </section>
     </div>

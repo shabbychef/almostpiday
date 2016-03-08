@@ -209,22 +209,57 @@ Turn it over to Zak for the next part.
 
 <center>![](./figure/Curve_fitting.jpg)</center>
 
---- .class #fooz
+--- .class #poo_one
 
 ## Plain Old Overfitting
 
 When backtests are fixed, you can move on to overfitting.
 
-Overfitting has two flavors here:
+Overfitting has two flavors (to me):
 
-1. a.
-2. b.
+1. Building a decent model for the assets and features used, but
+overestimating future performance based on in-sample data.
+(Using same data to build model and estimate it's Sharpe.)
+2. Adding opportunities [decreases the expected Sharpe](http://arxiv.org/abs/1409.5936)
+due to the added degrees of freedom.
 
+A Quant's Kōan:
 
-Equations:
+> Ignore data and your model is suboptimal.
+> Use all the data: your model is
+> suboptimal.
 
-$$
-x = \sum_{0 \le i \le 100} i^2
-$$
+--- .class #poo_two
+
+## Plain Old Overfitting
+
+Overfit is _not_ cured by silly ML tricks:
+
+You can talk about hold-out sets and in-sample all you want. 
+_There is no out-of-sample._ There is _in-sample_ and 
+_trading-real-money-on-the-strategy_.
+
+Overfit is approached as a technical problem, but fighting
+it requires discipline and soft engineering skills:
+If you don't keep track of everything you have tried, you can't 
+apply most techniques.
+
+--- .class #twoproblems
+
+## Technical Approaches
+
+Two forms of the problem I was interested in:
+
+1. For automated strategy search: having observed the in-sample Sharpe of $n \gg 10^4$ strategies,
+possibly selected by hill-climbing in-sample Sharpe, could we de-bias the Sharpe of the optimal one? 
+Or could we select some top $k$ of them and 'average' the strategies?
+2. For human strategy search: having observed the _returns_ of $n \ge 10^3$ strategies, along with
+the settings of some 'knobs' for each of them, could we estimate the effects of
+each knob? Could we pick the best knob setting and de-bias the estimated future
+Sharpe?
+
+I suspected classical approaches (WRC and extensions, Hansen's SPA, _etc._)
+would not work: different input, wrong assumptions, wouldn't scale.
+
 
 
