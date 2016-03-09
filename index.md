@@ -244,6 +244,26 @@ it requires discipline and soft engineering skills:
 If you don't keep track of everything you have tried, you can't 
 apply most techniques.
 
+--- .class #terminology
+
+## Some Terminology
+
+As an approximation, suppose that the returns of an asset (a strategy, stock,
+ETF, whatever) are constant over time.
+
+Typically use $\mu$ for the expected value, and $\sigma^2$ for the variance
+of the returns.
+
+Informally, the Sharpe ratio is defined as
+$$
+\zeta = \frac{\mu - r_0}{\sigma},
+$$
+where $r_0$ is the 'risk-free' or 'disastrous rate' of return.
+
+(Formally, I tend to use 'Sharpe' to refer to a sample statistic, and
+'signal-noise-ratio' to refer to population quantities. Let's not be
+so pedantic here.)
+
 --- .class #twoproblems
 
 ## Technical Approaches
@@ -261,5 +281,88 @@ Sharpe?
 I suspected classical approaches (WRC and extensions, Hansen's SPA, _etc._)
 would not work: different input, wrong assumptions, wouldn't scale.
 
+--- .class #poapprox
 
+### Optimal Sharpe over many correlated strategies
 
+Suppose you observed the time series of returns of $n \gg 10^4$ strategies, each
+of length $T$, in $T \times n$ matrix $X$.
+
+Think of a dimensionality reduction, where $X$ is nearly contained in some $k$
+dimensional subspace, with $k \ll T$:
+$$
+X \approx L W,
+$$
+where $L$ is $T \times k$, and $W$ is $k \times n$.
+
+You can think of returns in $X$ as portfolios over latent returns in $L$ with
+portfolio weights $W$. 
+
+What is the maximal Sharpe over $k$ assets?
+
+--- .class #poapproxtwo
+
+### Optimal portfolio Sharpe
+
+Optimal Sharpe over $k$ assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling's $T^2$.
+
+As an aside, interesting connections between quant metrics 
+(the 'right' ones) and classical statistics:
+
+ quant world  |  classical statistics  
+--------------|-------------------------
+Sharpe ratio                   | $t$ statistic 
+squared Sharpe of Markowitz Portfolio | Hotelling $T^2$ 
+expected squared Sharpe, conditional on features | Hotelling-Lawley Trace
+
+--- .class #poapproxthree
+
+### Optimal portfolio Sharpe
+
+Optimal Sharpe over $k$ assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling's $T^2$.
+
+We know the distribution of the (in-sample) Sharpe of the Markowitz portfolio
+as a function of $k$, $T$, and the (population) Sharpe of the 
+(population) Markowitz portfolio. 
+
+We also have good estimators of, and confidence intervals around that population 
+optimal Sharpe given the in-sample statistics. (Given in
+[SharpeR](http://github.com/shabbychef/SharpeR) for example.)
+
+Note that the $X$ did not need to be observed, only the optimal Sharpe over
+$X$. (Downside: have to estimate $k$)
+
+--- .class #sharpeeffectsone
+
+### Human overfitting problem
+
+Observe time series of returns of $n \approx 10^3$ strategies, each
+of length $T$, in $T \times n$ matrix $X$. Also observe $f \approx 50$
+'features' on each asset in $f \times n$ matrix $F$.
+
+Modeling the Sharpe of each asset as some _linear_ function of the features in
+$F$. If $\mathbf{\zeta}$ is the $n$-vector of Sharpes, we have
+$$
+\mathbf{\zeta} \approx F^{\top} \beta
+$$
+for some unknown $f$-vector $\beta$.
+
+--- .class #sharpeeffectstwo
+
+### Human overfitting problem
+
+When $n$ is reasonable, from $X$ you can compute the vector of sample Sharpes
+$\mathbf{\zeta}$ and the $n\times n$ matrix of variance-covariance,
+$\Omega$.
+(Classical asymptotic result of Jobson & Korkie.)
+
+Then regress $\mathbf{\zeta}$ against $F^{\top}$, and the variance-covariance
+around estimated $\beta$ is
+$$
+\left(F^{\top}F\right)^{-1} F^{\top} \Omega F \left(F^{\top}F\right)^{-1}
+$$
+
+Result is estimate of the _effects_ of each feature and variance-covariance
+around them.

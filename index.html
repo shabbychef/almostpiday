@@ -264,6 +264,25 @@ If you don&#39;t keep track of everything you have tried, you can&#39;t
 apply most techniques.</p>
 
 </section>
+<section class='class' data-state='' id='terminology'>
+  <h2>Some Terminology</h2>
+  <p>As an approximation, suppose that the returns of an asset (a strategy, stock,
+ETF, whatever) are constant over time.</p>
+
+<p>Typically use \(\mu\) for the expected value, and \(\sigma^2\) for the variance
+of the returns.</p>
+
+<p>Informally, the Sharpe ratio is defined as
+\[
+\zeta = \frac{\mu - r_0}{\sigma},
+\]
+where \(r_0\) is the &#39;risk-free&#39; or &#39;disastrous rate&#39; of return.</p>
+
+<p>(Formally, I tend to use &#39;Sharpe&#39; to refer to a sample statistic, and
+&#39;signal-noise-ratio&#39; to refer to population quantities. Let&#39;s not be
+so pedantic here.)</p>
+
+</section>
 <section class='class' data-state='' id='twoproblems'>
   <h2>Technical Approaches</h2>
   <p>Two forms of the problem I was interested in:</p>
@@ -280,6 +299,101 @@ Sharpe?</li>
 
 <p>I suspected classical approaches (WRC and extensions, Hansen&#39;s SPA, <em>etc.</em>)
 would not work: different input, wrong assumptions, wouldn&#39;t scale.</p>
+
+</section>
+<section class='class' data-state='' id='poapprox'>
+  <h3>Optimal Sharpe over many correlated strategies</h3>
+  <p>Suppose you observed the time series of returns of \(n \gg 10^4\) strategies, each
+of length \(T\), in \(T \times n\) matrix \(X\).</p>
+
+<p>Think of a dimensionality reduction, where \(X\) is nearly contained in some \(k\)
+dimensional subspace, with \(k \ll T\):
+\[
+X \approx L W,
+\]
+where \(L\) is \(T \times k\), and \(W\) is \(k \times n\).</p>
+
+<p>You can think of returns in \(X\) as portfolios over latent returns in \(L\) with
+portfolio weights \(W\). </p>
+
+<p>What is the maximal Sharpe over \(k\) assets?</p>
+
+</section>
+<section class='class' data-state='' id='poapproxtwo'>
+  <h3>Optimal portfolio Sharpe</h3>
+  <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling&#39;s \(T^2\).</p>
+
+<p>As an aside, interesting connections between quant metrics 
+(the &#39;right&#39; ones) and classical statistics:</p>
+
+<table><thead>
+<tr>
+<th>quant world</th>
+<th>classical statistics</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Sharpe ratio</td>
+<td>\(t\) statistic</td>
+</tr>
+<tr>
+<td>squared Sharpe of Markowitz Portfolio</td>
+<td>Hotelling \(T^2\)</td>
+</tr>
+<tr>
+<td>expected squared Sharpe, conditional on features</td>
+<td>Hotelling-Lawley Trace</td>
+</tr>
+</tbody></table>
+
+</section>
+<section class='class' data-state='' id='poapproxthree'>
+  <h3>Optimal portfolio Sharpe</h3>
+  <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling&#39;s \(T^2\).</p>
+
+<p>We know the distribution of the (in-sample) Sharpe of the Markowitz portfolio
+as a function of \(k\), \(T\), and the (population) Sharpe of the 
+(population) Markowitz portfolio. </p>
+
+<p>We also have good estimators of, and confidence intervals around that population 
+optimal Sharpe given the in-sample statistics. (Given in
+<a href="http://github.com/shabbychef/SharpeR">SharpeR</a> for example.)</p>
+
+<p>Note that the \(X\) did not need to be observed, only the optimal Sharpe over
+\(X\). (Downside: have to estimate \(k\))</p>
+
+</section>
+<section class='class' data-state='' id='sharpeeffectsone'>
+  <h3>Human overfitting problem</h3>
+  <p>Observe time series of returns of \(n \approx 10^3\) strategies, each
+of length \(T\), in \(T \times n\) matrix \(X\). Also observe \(f \approx 50\)
+&#39;features&#39; on each asset in \(f \times n\) matrix \(F\).</p>
+
+<p>Modeling the Sharpe of each asset as some <em>linear</em> function of the features in
+\(F\). If \(\mathbf{\zeta}\) is the \(n\)-vector of Sharpes, we have
+\[
+\mathbf{\zeta} \approx F^{\top} \beta
+\]
+for some unknown \(f\)-vector \(\beta\).</p>
+
+</section>
+<section class='class' data-state='' id='sharpeeffectstwo'>
+  <h3>Human overfitting problem</h3>
+  <p>When \(n\) is reasonable, from \(X\) you can compute the vector of sample Sharpes
+\(\mathbf{\zeta}\) and the \(n\times n\) matrix of variance-covariance,
+\(\Omega\).
+(Classical asymptotic result of Jobson &amp; Korkie.)</p>
+
+<p>Then regress \(\mathbf{\zeta}\) against \(F^{\top}\), and the variance-covariance
+around estimated \(\beta\) is
+\[
+\left(F^{\top}F\right)^{-1} F^{\top} \Omega F \left(F^{\top}F\right)^{-1}
+\]</p>
+
+<p>Result is estimate of the <em>effects</em> of each feature and variance-covariance
+around them.</p>
 
 </section>
     </div>
