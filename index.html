@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Overfitting</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Overfitting">
+  <meta name="author" content="Steven E. Pav">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Overfitting</h1>
+    <h2>for fun but not profit.</h2>
+    <p>Steven E. Pav<br/>(former quant)</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <article data-timings="">
+    <!-- zoom transition also good, but a little distracting -->
+
+<!-- c.f.  
+http://zevross.com/blog/2014/11/19/creating-elegant-html-presentations-that-feature-r-code/
+http://stackoverflow.com/a/21468200/164611
+https://github.com/hakimel/reveal.js/
+https://j.eremy.net/align-lists-flush-left/
+-->
+
+<!-- 
+run it via 
+slidify::slidify('index.Rmd')
+
+or 
+r -l slidify -e 'slidify("index.Rmd")'
+-->
+
+<style type="text/css">
+p { text-align: left; }
+</style>
+
+<h2>Everyone Overfits</h2>
+
+<p>Consider the work cycle of an equities quant:</p>
+
+<pre><code>1. Posit some mechanism causing market inefficiency (or read about it in a paper, 
+on the net, or in the NY Times Sunday Business section).
+2. Collect the data and write some code to test for the inefficiency.
+3. Find inconclusive backtest, and bugs in code.
+4. Modify idea while fixing code.
+5. Generalize the problem, start fiddling with knobs.
+6. Maybe find an effect, but try some other stuff.
+...
+192. Brute force check all knob settings.
+193. Definitely have a tradeable strategy, present to investment team.
+194. Suffer from amnesia regarding development.
+195. Back to 1.
+</code></pre>
+
+<p>How can this possibly work?</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="poo_two" style="background:;">
+  <hgroup>
+    <h2>Two Kinds of Overfitting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>There are two effects of overfitting:</p>
+
+<ol>
+<li>Estimates of the out-of-sample performance of a strategy are
+ too optimistic.</li>
+<li>You select and deploy a strategy that is suboptimal compared
+ to others in your search space.</li>
+</ol>
+
+<p>You <em>can</em> suffer both!</p>
+
+<h3>Overfit is <em>not</em> cured by silly ML tricks:</h3>
+
+<p>You can talk about hold-out sets and in-sample all you want. 
+<em>There is no out-of-sample.</em> There is <em>in-sample</em> and 
+<em>trading-real-money-on-the-strategy</em>.</p>
+
+<p>Overfit is approached as a technical problem, but fighting
+it requires discipline and soft engineering skills:
+If you don&#39;t keep track of everything you have tried, you can&#39;t 
+apply most techniques.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="terminology" style="background:;">
+  <hgroup>
+    <h2>Some Terminology</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>As an approximation, suppose that the returns of strategy are constant over time.</p>
+
+<p>Typically use \(\mu\) for the expected value, and \(\sigma^2\) for the variance
+of the returns.</p>
+
+<p>Informally, the Sharpe ratio is defined as
+\[
+\zeta = \frac{\mu - r_0}{\sigma},
+\]
+where \(r_0\) is the &#39;risk-free&#39; or &#39;disastrous rate&#39; of return.</p>
+
+<p>To a first order approximation, funds want to maximize Sharpe.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="twoproblems" style="background:;">
+  <hgroup>
+    <h2>Technical Approaches</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Two forms of the problem I was interested in:</p>
+
+<ol>
+<li>For automated strategy search: having observed the in-sample Sharpe of \(n \gg 10^4\) strategies,
+possibly selected by hill-climbing in-sample Sharpe, could we de-bias the Sharpe of the optimal one? 
+Or could we select some top \(k\) of them and &#39;average&#39; the strategies?</li>
+<li>For human strategy search: having observed the <em>returns</em> of \(n \ge 10^3\) strategies, along with
+the settings of some &#39;knobs&#39; for each of them, could we estimate the effects of
+each knob? Could we pick the best knob setting and de-bias the estimated future
+Sharpe?</li>
+</ol>
+
+<p>I suspected classical approaches (WRC and extensions, Hansen&#39;s SPA, <em>etc.</em>)
+would not work: different input, wrong assumptions, wouldn&#39;t scale.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="poapprox" style="background:;">
+  <hgroup>
+    <h3>Optimal Sharpe over many correlated strategies</h3>
+  </hgroup>
+  <article data-timings="">
+    <p>Suppose you observed the time series of returns of \(n \gg 10^4\) strategies, each
+of length \(T\), in \(T \times n\) matrix \(X\).</p>
+
+<p>Think of a dimensionality reduction, where \(X\) is nearly contained in some \(k\)
+dimensional subspace, with \(k \ll T\):
+\[
+X \approx L W,
+\]
+where \(L\) is \(T \times k\), and \(W\) is \(k \times n\).</p>
+
+<p>You can think of returns in \(X\) as portfolios over latent returns in \(L\) with
+portfolio weights \(W\). </p>
+
+<p>What is the maximal Sharpe over \(k\) assets?</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="poapproxtwo" style="background:;">
+  <hgroup>
+    <h3>Optimal portfolio Sharpe</h3>
+  </hgroup>
+  <article data-timings="">
+    <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling&#39;s \(T^2\).</p>
+
+<p>As an aside, interesting connections between quant metrics 
+(the &#39;right&#39; ones) and classical statistics:</p>
+
+<table><thead>
+<tr>
+<th>quant world</th>
+<th>classical statistics</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Sharpe ratio</td>
+<td>\(t\) statistic</td>
+</tr>
+<tr>
+<td>squared Sharpe of Markowitz Portfolio</td>
+<td>Hotelling \(T^2\)</td>
+</tr>
+<tr>
+<td>expected squared Sharpe, conditional on features</td>
+<td>Hotelling-Lawley Trace</td>
+</tr>
+</tbody></table>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="poapproxthree" style="background:;">
+  <hgroup>
+    <h3>Optimal portfolio Sharpe</h3>
+  </hgroup>
+  <article data-timings="">
+    <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
+Distribution is related to Hotelling&#39;s \(T^2\).</p>
+
+<p>We know the distribution of the (in-sample) Sharpe of the Markowitz portfolio
+as a function of \(k\), \(T\), and the (population) Sharpe of the 
+(population) Markowitz portfolio. </p>
+
+<p>We also have good estimators of, and confidence intervals around that population 
+optimal Sharpe given the in-sample statistics. (Given in
+<a href="http://github.com/shabbychef/SharpeR">SharpeR</a> for example.)</p>
+
+<p>Note that the \(X\) did not need to be observed, only the optimal Sharpe over
+\(X\). (Downside: have to estimate \(k\))</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='NA'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Two Kinds of Overfitting'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Some Terminology'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Technical Approaches'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Optimal Sharpe over many correlated strategies'>
+         5
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=6 title='Optimal portfolio Sharpe'>
+         6
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=7 title='Optimal portfolio Sharpe'>
+         7
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>   
+  </html>
