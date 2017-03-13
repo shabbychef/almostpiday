@@ -32,6 +32,9 @@ or
 r -l slidify -e 'slidify("index.Rmd")'
 -->
  
+\(
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\)
 <style type="text/css">
 p { text-align: left; }
 </style>
@@ -49,7 +52,7 @@ Consider the work cycle of an equities quant:
 	6. Maybe find an effect, but try some other stuff.
 	...
 	192. Brute force check all knob settings.
-	193. Definitely have a tradeable strategy, present to investment team.
+	193. Definitely have a tradeable strategy this time, present to investment team.
 	194. Suffer from amnesia regarding development.
 	195. Back to 1.
 
@@ -70,9 +73,9 @@ There are two effects of overfitting:
 
 You _can_ suffer both!
 
-### Overfit is _not_ cured by silly ML tricks:
+### Overfit is _not_ cured by ML tricks:
 
-You can talk about hold-out sets and in-sample all you want. 
+You can talk about cross validation, hold-out sets and in-sample all you want. 
 _There is no out-of-sample._ There is _in-sample_ and 
 _trading-real-money-on-the-strategy_.
 
@@ -96,76 +99,118 @@ $$
 $$
 where $r_0$ is the 'risk-free' or 'disastrous rate' of return.
 
-To a first order approximation, funds want to maximize Sharpe.
+To a first order approximation, funds and investors want to maximize Sharpe.
 
---- .class #twoproblems
-
-## Technical Approaches
-
-Two forms of the problem I was interested in:
-
-1. For automated strategy search: having observed the in-sample Sharpe of $n \gg 10^4$ strategies,
-possibly selected by hill-climbing in-sample Sharpe, could we de-bias the Sharpe of the optimal one? 
-Or could we select some top $k$ of them and 'average' the strategies?
-2. For human strategy search: having observed the _returns_ of $n \ge 10^3$ strategies, along with
-the settings of some 'knobs' for each of them, could we estimate the effects of
-each knob? Could we pick the best knob setting and de-bias the estimated future
-Sharpe?
-
-I suspected classical approaches (WRC and extensions, Hansen's SPA, _etc._)
-would not work: different input, wrong assumptions, wouldn't scale.
+Often use same terminology to refer to population quantity and sample estimate,
+but they are different.
 
 --- .class #poapprox
 
-### Optimal Sharpe over many correlated strategies
+## Optimal Sharpe over many correlated strategies
 
-Suppose you observed the time series of returns of $n \gg 10^4$ strategies, each
-of length $T$, in $T \times n$ matrix $X$.
+* Suppose you backtested many strategies, selected for 
+in-sample (backtested) Sharpe.
+* Probably automated and human search search: GP, SA, non-linear
+optimization, hill-climbing, knob-fiddling, _etc._ 
+* Correlated returns and you threw away most of the time
+series, and don't remember how many there were.
 
-Think of a dimensionality reduction, where $X$ is nearly contained in some $k$
-dimensional subspace, with $k \ll T$:
+In principle, there are $m$ time series of returns, each of length $n$, in 
+a $n \times m$ matrix $X$.
+Think of a dimensionality reduction, with $X$ nearly contained in a $k$
+dimensional subspace, with $k \ll m$:
 $$
 X \approx L W,
 $$
-where $L$ is $T \times k$, and $W$ is $k \times n$.
+where $L$ is $n \times k$, and $W$ is $k \times m$.
 
 You can think of returns in $X$ as portfolios over latent returns in $L$ with
 portfolio weights $W$. 
 
-What is the maximal Sharpe over $k$ assets?
+_What is the maximal Sharpe of a linear combination of $k$ assets?_
 
 --- .class #poapproxtwo
 
-### Optimal portfolio Sharpe
+## Optimal portfolio Sharpe
 
-Optimal Sharpe over $k$ assets is achieved by the Markowitz portfolio.
-Distribution is related to Hotelling's $T^2$.
 
-As an aside, interesting connections between quant metrics 
+Given $k$ vector of returns with mean $\mu$ and covariance $\Sigma$,
+Sharpe optimization is
+$$
+\argmin_{w : w^{\top}\Sigma w \le R^2} \frac{\mu^{\top} w - r_0}{\sqrt{w^{\top}\Sigma  w}} = 
+c\Sigma^{-1}\mu.
+$$
+The Sharpe of this Markowitz Portfolio is
+$$
+\frac{\mu^{\top} \left(\Sigma^{-1}\mu\right)}{\sqrt{\left(\Sigma^{-1}\mu\right)^{\top}
+\Sigma \left(\Sigma^{-1}\mu\right)}} 
+= \sqrt{\mu^{\top}\Sigma^{-1}\mu}.
+$$
+When built with sample estimates, this is Hotelling's $T^2$ up to scaling:
+$$
+T^2 = n {\hat{\mu}^{\top}\hat{\Sigma}^{-1}\hat{\mu}}.
+$$
+
+--- .class #aside
+
+## An aside 
+
+Connections between quant metrics 
 (the 'right' ones) and classical statistics:
 
- quant world  |  classical statistics  
---------------|-------------------------
-Sharpe ratio                   | $t$ statistic 
-squared Sharpe of Markowitz Portfolio | Hotelling $T^2$ 
-expected squared Sharpe, conditional on features | Hotelling-Lawley Trace
+ quant world  |  classical statistics   | classical use
+--------------|-------------------------|--------------------------
+Sharpe ratio  | $t$ statistic | detect non-$0$ mean or regression coef.
+squared Sharpe of Markowitz Portfolio | Hotelling $T^2$ | detect non-$0$ _vector_ mean
+expected squared Sharpe, conditional on features | Hotelling-Lawley Trace | detect non-$0$ multivariate multiple regression coef.
 
 --- .class #poapproxthree
 
-### Optimal portfolio Sharpe
+## Optimal portfolio Sharpe
 
-Optimal Sharpe over $k$ assets is achieved by the Markowitz portfolio.
-Distribution is related to Hotelling's $T^2$.
+The distribution of sample $T^2$, for Gaussian returns, is a known
+function of $n, k,$ and the population $\mu^{\top}\Sigma^{-1}\mu$:
+$$
+\frac{n}{n-1}\frac{1/k}{1/(n-k)} {\hat{\mu}^{\top}\hat{\Sigma}^{-1}\hat{\mu}} 
+\sim
+F\left(k, n-k, \frac{1/k}{1/(n-k)} {\mu^{\top}\Sigma^{-1}\mu} \right)
+$$
+This is  _non-central F distribution_, and 
+$\frac{1/k}{1/(n-k)} {\mu^{\top}\Sigma^{-1}\mu}$ is the _non-centrality
+parameter_.<br>
+(These are built in to R via ```df```, ```pf```, and ```qf```.)
 
-We know the distribution of the (in-sample) Sharpe of the Markowitz portfolio
-as a function of $k$, $T$, and the (population) Sharpe of the 
-(population) Markowitz portfolio. 
+Can build confidence intervals on the n.c.p.:
+find smallest non-negative ```z``` 
+such that <br>
+```pf((optsr^2)*(n-k)/k, df1=k, df2=n-k, ncp=z*(n-k)/k, lower.tail=F) >= 0.05```<br>
+(See ```?SharpeR::confint.sropt```)
 
-We also have good estimators of, and confidence intervals around that population 
-optimal Sharpe given the in-sample statistics. (Given in
-[SharpeR](http://github.com/shabbychef/SharpeR) for example.)
+Known unbiased estimators for 
+${\mu^{\top}\Sigma^{-1}\mu}$
+but they might be negative!
 
-Note that the $X$ did not need to be observed, only the optimal Sharpe over
-$X$. (Downside: have to estimate $k$)
+Better positive estimators under quadratic loss due to [Kubokawa Robert
+Saleh](http://www.jstor.org/stable/3315657).
 
+--- .class #anexample
+
+## Back to Overfitting 
+
+Note that the $X$ did not need to be observed, only optimal Sharpe over
+$X$.<br>
+(Downside: have to estimate $k$)<br>
+<img src="assets/fig/unnamed-chunk-1-1.png" title="Q-Q plot of 2048 achieved optimal \txtSR values from brute force search over both windows of a Moving Average Crossover under the null of driftless log returns with zero autocorrelation versus the approximation by a 2-parameter optimal \txtSR distribution is shown." alt="Q-Q plot of 2048 achieved optimal \txtSR values from brute force search over both windows of a Moving Average Crossover under the null of driftless log returns with zero autocorrelation versus the approximation by a 2-parameter optimal \txtSR distribution is shown." width="500px" height="400px" />
+<figcaption>
+Q-Q plot of 2048 achieved optimal Sharpe values from brute force search over both windows of MAC vs. $k=2$ approximation.
+</figcaption>
+
+--- .class #finish
+
+## Finally
+
+* You can maybe use this to fight overfitting.
+* Careful process also very important. ([Backtests are often
+	broken](http://www.gilgamath.com/startupmltalk/#1).)
+* Some of this is in ```SharpeR``` package.
 

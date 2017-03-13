@@ -61,6 +61,10 @@ or
 r -l slidify -e 'slidify("index.Rmd")'
 -->
 
+<p>\(
+\DeclareMathOperator*{\argmin}{\arg\!\min}
+\)</p>
+
 <style type="text/css">
 p { text-align: left; }
 </style>
@@ -78,7 +82,7 @@ on the net, or in the NY Times Sunday Business section).
 6. Maybe find an effect, but try some other stuff.
 ...
 192. Brute force check all knob settings.
-193. Definitely have a tradeable strategy, present to investment team.
+193. Definitely have a tradeable strategy this time, present to investment team.
 194. Suffer from amnesia regarding development.
 195. Back to 1.
 </code></pre>
@@ -105,9 +109,9 @@ on the net, or in the NY Times Sunday Business section).
 
 <p>You <em>can</em> suffer both!</p>
 
-<h3>Overfit is <em>not</em> cured by silly ML tricks:</h3>
+<h3>Overfit is <em>not</em> cured by ML tricks:</h3>
 
-<p>You can talk about hold-out sets and in-sample all you want. 
+<p>You can talk about cross validation, hold-out sets and in-sample all you want. 
 <em>There is no out-of-sample.</em> There is <em>in-sample</em> and 
 <em>trading-real-money-on-the-strategy</em>.</p>
 
@@ -136,31 +140,10 @@ of the returns.</p>
 \]
 where \(r_0\) is the &#39;risk-free&#39; or &#39;disastrous rate&#39; of return.</p>
 
-<p>To a first order approximation, funds want to maximize Sharpe.</p>
+<p>To a first order approximation, funds and investors want to maximize Sharpe.</p>
 
-  </article>
-  <!-- Presenter Notes -->
-</slide>
-
-<slide class="class" id="twoproblems" style="background:;">
-  <hgroup>
-    <h2>Technical Approaches</h2>
-  </hgroup>
-  <article data-timings="">
-    <p>Two forms of the problem I was interested in:</p>
-
-<ol>
-<li>For automated strategy search: having observed the in-sample Sharpe of \(n \gg 10^4\) strategies,
-possibly selected by hill-climbing in-sample Sharpe, could we de-bias the Sharpe of the optimal one? 
-Or could we select some top \(k\) of them and &#39;average&#39; the strategies?</li>
-<li>For human strategy search: having observed the <em>returns</em> of \(n \ge 10^3\) strategies, along with
-the settings of some &#39;knobs&#39; for each of them, could we estimate the effects of
-each knob? Could we pick the best knob setting and de-bias the estimated future
-Sharpe?</li>
-</ol>
-
-<p>I suspected classical approaches (WRC and extensions, Hansen&#39;s SPA, <em>etc.</em>)
-would not work: different input, wrong assumptions, wouldn&#39;t scale.</p>
+<p>Often use same terminology to refer to population quantity and sample estimate,
+but they are different.</p>
 
   </article>
   <!-- Presenter Notes -->
@@ -168,23 +151,31 @@ would not work: different input, wrong assumptions, wouldn&#39;t scale.</p>
 
 <slide class="class" id="poapprox" style="background:;">
   <hgroup>
-    <h3>Optimal Sharpe over many correlated strategies</h3>
+    <h2>Optimal Sharpe over many correlated strategies</h2>
   </hgroup>
   <article data-timings="">
-    <p>Suppose you observed the time series of returns of \(n \gg 10^4\) strategies, each
-of length \(T\), in \(T \times n\) matrix \(X\).</p>
+    <ul>
+<li>Suppose you backtested many strategies, selected for 
+in-sample (backtested) Sharpe.</li>
+<li>Probably automated and human search search: GP, SA, non-linear
+optimization, hill-climbing, knob-fiddling, <em>etc.</em> </li>
+<li>Correlated returns and you threw away most of the time
+series, and don&#39;t remember how many there were.</li>
+</ul>
 
-<p>Think of a dimensionality reduction, where \(X\) is nearly contained in some \(k\)
-dimensional subspace, with \(k \ll T\):
+<p>In principle, there are \(m\) time series of returns, each of length \(n\), in 
+a \(n \times m\) matrix \(X\).
+Think of a dimensionality reduction, with \(X\) nearly contained in a \(k\)
+dimensional subspace, with \(k \ll m\):
 \[
 X \approx L W,
 \]
-where \(L\) is \(T \times k\), and \(W\) is \(k \times n\).</p>
+where \(L\) is \(n \times k\), and \(W\) is \(k \times m\).</p>
 
 <p>You can think of returns in \(X\) as portfolios over latent returns in \(L\) with
 portfolio weights \(W\). </p>
 
-<p>What is the maximal Sharpe over \(k\) assets?</p>
+<p><em>What is the maximal Sharpe of a linear combination of \(k\) assets?</em></p>
 
   </article>
   <!-- Presenter Notes -->
@@ -192,32 +183,59 @@ portfolio weights \(W\). </p>
 
 <slide class="class" id="poapproxtwo" style="background:;">
   <hgroup>
-    <h3>Optimal portfolio Sharpe</h3>
+    <h2>Optimal portfolio Sharpe</h2>
   </hgroup>
   <article data-timings="">
-    <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
-Distribution is related to Hotelling&#39;s \(T^2\).</p>
+    <p>Given \(k\) vector of returns with mean \(\mu\) and covariance \(\Sigma\),
+Sharpe optimization is
+\[
+\argmin_{w : w^{\top}\Sigma w \le R^2} \frac{\mu^{\top} w - r_0}{\sqrt{w^{\top}\Sigma  w}} = 
+c\Sigma^{-1}\mu.
+\]
+The Sharpe of this Markowitz Portfolio is
+\[
+\frac{\mu^{\top} \left(\Sigma^{-1}\mu\right)}{\sqrt{\left(\Sigma^{-1}\mu\right)^{\top}
+\Sigma \left(\Sigma^{-1}\mu\right)}} 
+= \sqrt{\mu^{\top}\Sigma^{-1}\mu}.
+\]
+When built with sample estimates, this is Hotelling&#39;s \(T^2\) up to scaling:
+\[
+T^2 = n {\hat{\mu}^{\top}\hat{\Sigma}^{-1}\hat{\mu}}.
+\]</p>
 
-<p>As an aside, interesting connections between quant metrics 
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="aside" style="background:;">
+  <hgroup>
+    <h2>An aside</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Connections between quant metrics 
 (the &#39;right&#39; ones) and classical statistics:</p>
 
 <table><thead>
 <tr>
 <th>quant world</th>
 <th>classical statistics</th>
+<th>classical use</th>
 </tr>
 </thead><tbody>
 <tr>
 <td>Sharpe ratio</td>
 <td>\(t\) statistic</td>
+<td>detect non-\(0\) mean or regression coef.</td>
 </tr>
 <tr>
 <td>squared Sharpe of Markowitz Portfolio</td>
 <td>Hotelling \(T^2\)</td>
+<td>detect non-\(0\) <em>vector</em> mean</td>
 </tr>
 <tr>
 <td>expected squared Sharpe, conditional on features</td>
 <td>Hotelling-Lawley Trace</td>
+<td>detect non-\(0\) multivariate multiple regression coef.</td>
 </tr>
 </tbody></table>
 
@@ -227,22 +245,66 @@ Distribution is related to Hotelling&#39;s \(T^2\).</p>
 
 <slide class="class" id="poapproxthree" style="background:;">
   <hgroup>
-    <h3>Optimal portfolio Sharpe</h3>
+    <h2>Optimal portfolio Sharpe</h2>
   </hgroup>
   <article data-timings="">
-    <p>Optimal Sharpe over \(k\) assets is achieved by the Markowitz portfolio.
-Distribution is related to Hotelling&#39;s \(T^2\).</p>
+    <p>The distribution of sample \(T^2\), for Gaussian returns, is a known
+function of \(n, k,\) and the population \(\mu^{\top}\Sigma^{-1}\mu\):
+\[
+\frac{n}{n-1}\frac{1/k}{1/(n-k)} {\hat{\mu}^{\top}\hat{\Sigma}^{-1}\hat{\mu}} 
+\sim
+F\left(k, n-k, \frac{1/k}{1/(n-k)} {\mu^{\top}\Sigma^{-1}\mu} \right)
+\]
+This is  <em>non-central F distribution</em>, and 
+\(\frac{1/k}{1/(n-k)} {\mu^{\top}\Sigma^{-1}\mu}\) is the <em>non-centrality
+parameter</em>.<br>
+(These are built in to R via <code>df</code>, <code>pf</code>, and <code>qf</code>.)</p>
 
-<p>We know the distribution of the (in-sample) Sharpe of the Markowitz portfolio
-as a function of \(k\), \(T\), and the (population) Sharpe of the 
-(population) Markowitz portfolio. </p>
+<p>Can build confidence intervals on the n.c.p.:
+find smallest non-negative <code>z</code> 
+such that <br>
+<code>pf((optsr^2)*(n-k)/k, df1=k, df2=n-k, ncp=z*(n-k)/k, lower.tail=F) &gt;= 0.05</code><br>
+(See <code>?SharpeR::confint.sropt</code>)</p>
 
-<p>We also have good estimators of, and confidence intervals around that population 
-optimal Sharpe given the in-sample statistics. (Given in
-<a href="http://github.com/shabbychef/SharpeR">SharpeR</a> for example.)</p>
+<p>Known unbiased estimators for 
+\({\mu^{\top}\Sigma^{-1}\mu}\)
+but they might be negative!</p>
 
-<p>Note that the \(X\) did not need to be observed, only the optimal Sharpe over
-\(X\). (Downside: have to estimate \(k\))</p>
+<p>Better positive estimators under quadratic loss due to <a href="http://www.jstor.org/stable/3315657">Kubokawa Robert
+Saleh</a>.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="anexample" style="background:;">
+  <hgroup>
+    <h2>Back to Overfitting</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Note that the \(X\) did not need to be observed, only optimal Sharpe over
+\(X\).<br>
+(Downside: have to estimate \(k\))<br>
+<img src="assets/fig/unnamed-chunk-1-1.png" title="Q-Q plot of 2048 achieved optimal \txtSR values from brute force search over both windows of a Moving Average Crossover under the null of driftless log returns with zero autocorrelation versus the approximation by a 2-parameter optimal \txtSR distribution is shown." alt="Q-Q plot of 2048 achieved optimal \txtSR values from brute force search over both windows of a Moving Average Crossover under the null of driftless log returns with zero autocorrelation versus the approximation by a 2-parameter optimal \txtSR distribution is shown." width="500px" height="400px" />
+<figcaption>
+Q-Q plot of 2048 achieved optimal Sharpe values from brute force search over both windows of MAC vs. \(k=2\) approximation.
+</figcaption></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="finish" style="background:;">
+  <hgroup>
+    <h2>Finally</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>You can maybe use this to fight overfitting.</li>
+<li>Careful process also very important. (<a href="http://www.gilgamath.com/startupmltalk/#1">Backtests are often
+broken</a>.)</li>
+<li>Some of this is in <code>SharpeR</code> package.</li>
+</ul>
 
   </article>
   <!-- Presenter Notes -->
@@ -272,19 +334,19 @@ optimal Sharpe given the in-sample statistics. (Given in
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=4 title='Technical Approaches'>
+        data-slide=4 title='Optimal Sharpe over many correlated strategies'>
          4
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=5 title='Optimal Sharpe over many correlated strategies'>
+        data-slide=5 title='Optimal portfolio Sharpe'>
          5
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=6 title='Optimal portfolio Sharpe'>
+        data-slide=6 title='An aside'>
          6
       </a>
     </li>
@@ -292,6 +354,18 @@ optimal Sharpe given the in-sample statistics. (Given in
       <a href="#" target="_self" rel='tooltip' 
         data-slide=7 title='Optimal portfolio Sharpe'>
          7
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=8 title='Back to Overfitting'>
+         8
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=9 title='Finally'>
+         9
       </a>
     </li>
   </ul>
@@ -312,7 +386,10 @@ optimal Sharpe given the in-sample statistics. (Given in
       tex2jax: {
         inlineMath: [['$','$'], ['\\(','\\)']],
         processEscapes: true
-      }
+      },
+  		TeX: {
+  			extensions: ["AMSmath.js", "AMSsymbols.js"]
+  		}
     });
   </script>
   <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
